@@ -17,7 +17,8 @@ defmodule DndChatWeb.Router do
   scope "/", DndChatWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    # live "/", PageLive, :index
+    get "/", NewSessionController, :index
   end
 
   # Other scopes may use custom stacks.
