@@ -9,8 +9,14 @@ defmodule DndChatWeb.JoinSessionController do
   end
 
   def join_session(conn, %{"player_name" => player_name, "slug" => slug}) do
-    {:ok, session} = Sessions.get_by_invite(slug)
+    {:ok, session, player} =
+      Sessions.join_by_invite(%{
+        slug: slug,
+        player_name: player_name
+      })
 
-    redirect(conn, to: Routes.session_chat_path(conn, :index, session.id))
+    conn
+    |> put_session("player_id", player.id)
+    |> redirect(to: Routes.session_chat_path(conn, :index, session.id))
   end
 end

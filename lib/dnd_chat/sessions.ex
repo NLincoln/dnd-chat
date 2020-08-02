@@ -1,5 +1,5 @@
 defmodule DndChat.Sessions do
-  alias DndChat.Sessions.{Session, SessionInvite}
+  alias DndChat.Sessions.{Session, SessionInvite, Player}
   alias DndChat.Repo
 
   import Ecto.Query, only: [from: 2]
@@ -34,9 +34,32 @@ defmodule DndChat.Sessions do
     Repo.get!(Session, id)
   end
 
+  def get_for_player_id(player_id) do
+    player = get_player_by_id(player_id)
+    session = get_by_id(player.session_id)
+    {:ok, session, player}
+  end
+
+  def get_player_by_id(player_id) do
+    Repo.get!(Player, player_id)
+  end
+
   @spec get_by_invite(binary()) :: {:ok, Session.t()}
   def get_by_invite(slug) do
     invite = from(i in SessionInvite, where: i.slug == ^slug) |> Repo.one()
     {:ok, get_by_id(invite.session_id)}
+  end
+
+  def join_by_invite(%{player_name: player_name, slug: slug}) do
+    {:ok, session} = get_by_invite(slug)
+
+    {:ok, player} =
+      %Player{
+        session_id: session.id,
+        name: player_name
+      }
+      |> Repo.insert()
+
+    {:ok, session, player}
   end
 end

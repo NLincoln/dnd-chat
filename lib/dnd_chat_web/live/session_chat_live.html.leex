@@ -5,9 +5,9 @@
   <div class="card-body">
     <div>
       <%= for event <- @events do %>
-        <div>
+        <div data-testid="player-name">
           <small class="text-muted">
-            Player Name Placeholder
+            <%= event.data.player_name %>
           </small>
         </div>
         <div style="line-height: 0.9" class="mb-2">

@@ -5,6 +5,7 @@ defmodule DndChat.ChatEvents.Message do
 
   embedded_schema do
     field :player_id, :binary_id
+    field :player_name, :string
     field :text, :string
   end
 
@@ -12,6 +13,7 @@ defmodule DndChat.ChatEvents.Message do
     message
     |> cast(attrs, [
       :player_id,
+      :player_name,
       :text
     ])
   end

@@ -22,11 +22,12 @@ defmodule DndChat.ChatEvents do
     }
   end
 
-  defp process_event_data(%{"type" => "Message", "player_id" => player_id, "text" => text}) do
+  defp process_event_data(event = %{"type" => "Message"}) do
     %{
       type: "Message",
-      player_id: player_id,
-      text: text
+      player_id: Map.get(event, "player_id"),
+      player_name: Map.get(event, "player_name"),
+      text: Map.get(event, "text")
     }
   end
 
@@ -41,6 +42,7 @@ defmodule DndChat.ChatEvents do
         data: %{
           type: "Message",
           player_id: message.player_id,
+          player_name: message.player_name,
           text: message.text
         }
       })
@@ -50,9 +52,10 @@ defmodule DndChat.ChatEvents do
     :ok
   end
 
-  def new_message(player_id) do
+  def new_message(player) do
     Message.changeset(%Message{}, %{
-      player_id: player_id,
+      player_id: player.id,
+      player_name: player.name,
       text: ""
     })
   end
