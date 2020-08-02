@@ -8,6 +8,11 @@ defmodule DndChatWeb.Router do
     plug :put_root_layout, {DndChatWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+
+    plug Plug.Session,
+      store: :cookie,
+      key: "_dndchat_session",
+      signing_salt: "0E3kr1v5DwOebyeXAJFec27o"
   end
 
   pipeline :api do
@@ -21,7 +26,7 @@ defmodule DndChatWeb.Router do
     get "/", NewSessionController, :index
     post "/new-session", NewSessionController, :new_session
 
-    resources "/session", SessionController
+    live "/session/:id", SessionChatLive, :index
   end
 
   # Other scopes may use custom stacks.
