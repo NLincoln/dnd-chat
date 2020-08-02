@@ -3,11 +3,14 @@
     <%= @playsession.name %>
   </div>
   <div class="card-body">
-
+    <ul>
+      <%= for event <- @events do %>
+        <li> <%= event.data.text %> </li>
+      <% end %>
+    </ul>
     <%= f = form_for @current_message, "#", [phx_submit: "send_message", id: "message_editor"]%>
       <%= text_input f, :text, placeholder: "Say something", "data-testid": "message" %>
       <%# <input placeholder="Say something" data-testid="message"> %>
-
     </form>
   </div>
 </div>
