@@ -1,5 +1,4 @@
 defmodule DndChat.Sessions do
-  import Ecto.Query
   alias DndChat.Sessions.Session
   alias DndChat.Repo
 

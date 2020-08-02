@@ -4,6 +4,10 @@
   </div>
   <div class="card-body">
 
-    <input placeholder="Say something">
+    <%= f = form_for @current_message, "#", [phx_submit: "send_message", id: "message_editor"]%>
+      <%= text_input f, :text, placeholder: "Say something", "data-testid": "message" %>
+      <%# <input placeholder="Say something" data-testid="message"> %>
+
+    </form>
   </div>
 </div>

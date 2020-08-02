@@ -20,7 +20,7 @@ defmodule DndChat.Repo.Migrations.AddPlayersTable do
 
     create table(:event) do
       add :session_id, references(:session), null: false
-      add :data, :json, null: false
+      add :data, :jsonb, null: false
       add :timestamp, :utc_datetime, null: false
     end
 
