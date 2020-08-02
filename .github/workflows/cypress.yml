@@ -2,7 +2,7 @@
 # https://help.github.com/en/articles/configuring-a-workflow
 name: Cypress tests
 
-on: push
+on: ['push', 'pull_request']
 
 jobs:
   test1:
