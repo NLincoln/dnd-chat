@@ -37,8 +37,9 @@ jobs:
 
       - run: |
           mix deps.get
-          mix do ecto.create ecto.migrate
-          mix phx.server &
+          mix setup
+
+      - run: mix phx.server &
 
       # just so we learn about available environment variables GitHub provides
       - name: Print env variables
@@ -47,6 +48,14 @@ jobs:
           print-env GITHUB
 
       - run: cd assets
+
+      - name: verify Cypress
+        env:
+          # make sure every Cypress install prints minimal information
+          CI: 1
+        run: |
+          npx cypress verify
+          npx cypress info
 
       # Restore the previous NPM modules and Cypress binary archives.
       # Any updated archives will be saved automatically after the entire
@@ -68,18 +77,9 @@ jobs:
           restore-keys: |
             cypress-${{ runner.os }}-cypress-
 
-      - name: install dependencies and verify Cypress
-        env:
-          # make sure every Cypress install prints minimal information
-          CI: 1
-        run: |
-          npm ci
-          npx cypress verify
-          npx cypress info
-
       # Starts local server, then runs Cypress tests and records results on the dashboard
       - name: Cypress tests
-        run: npm run test:ci:record
+        run: npx cypress run
         env:
           # place your secret record key at
           # https://github.com/cypress-io/cypress-example-kitchensink/settings/secrets
