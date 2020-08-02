@@ -4,12 +4,11 @@ defmodule DndChat.Sessions.Session do
 
   schema "session" do
     field :name, :string
-    field :url_slug, :string
   end
 
   def changeset(session, params \\ %{}) do
     session
-    |> cast(params, [:name, :url_slug])
-    |> validate_required([:name, :url_slug])
+    |> cast(params, [:name])
+    |> validate_required([:name])
   end
 end

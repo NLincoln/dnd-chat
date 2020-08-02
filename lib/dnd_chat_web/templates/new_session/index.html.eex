@@ -3,14 +3,14 @@
     <h1>
       DND Chat App
     </h1>
-    <form>
+    <%= form_for @conn, Routes.new_session_path(@conn, :new_session), fn f -> %>
       <div class="form-group">
         <label for="session_name" class="">Session Name</label>
-        <input type="text" name="session_name" class="form-control" required placeholder="Adventure awaits!" autocomplete="off">
+        <input type="text" name="session_name" id="session_name" class="form-control" required placeholder="Adventure awaits!" autocomplete="off">
       </div>
       <button type="submit" class="btn btn-primary btn-block">
         Create Session
       </button>
-    </form>
+    <%end %>
   </div>
 </div>

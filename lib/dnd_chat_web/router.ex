@@ -19,6 +19,9 @@ defmodule DndChatWeb.Router do
 
     # live "/", PageLive, :index
     get "/", NewSessionController, :index
+    post "/new-session", NewSessionController, :new_session
+
+    resources "/session", SessionController
   end
 
   # Other scopes may use custom stacks.

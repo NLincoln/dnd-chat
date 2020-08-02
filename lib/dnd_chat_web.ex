@@ -22,6 +22,7 @@ defmodule DndChatWeb do
       use Phoenix.Controller, namespace: DndChatWeb
 
       import Plug.Conn
+      import Phoenix.LiveView.Controller
       alias DndChatWeb.Router.Helpers, as: Routes
     end
   end

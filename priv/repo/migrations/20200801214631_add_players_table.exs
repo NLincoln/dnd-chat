@@ -4,7 +4,6 @@ defmodule DndChat.Repo.Migrations.AddPlayersTable do
   def change do
     create table(:session) do
       add :name, :string, null: false
-      add :url_slug, :string, null: false
     end
 
     create table(:session_invite) do
