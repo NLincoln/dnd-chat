@@ -26,6 +26,9 @@ defmodule DndChatWeb.Router do
     get "/", NewSessionController, :index
     post "/new-session", NewSessionController, :new_session
 
+    get "/join-session/:id", JoinSessionController, :show
+    post "/join-session/:slug/join", JoinSessionController, :join_session
+
     live "/session/:id", SessionChatLive, :index
   end
 

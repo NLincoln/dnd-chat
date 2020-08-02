@@ -1,0 +1,16 @@
+<div class="d-flex justify-content-center align-items-center">
+  <div class="shadow p-3 rounded mt-4">
+    <h1>
+      Join <%= @session.name %>
+    </h1>
+    <%= form_for @conn, Routes.join_session_path(@conn, :join_session, @slug), fn _f -> %>
+      <div class="form-group">
+        <label for="player_name" class="">Player Name</label>
+        <input type="text" name="player_name" id="player_name" class="form-control" required placeholder="Adventure awaits!" autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">
+        Join!
+      </button>
+    <%end %>
+  </div>
+</div>

@@ -8,8 +8,9 @@ defmodule DndChatWeb.NewSessionController do
   end
 
   def new_session(conn, %{"session_name" => session_name}) do
-    session = Sessions.new_session(%{name: session_name})
+    {:ok, session} = Sessions.new_session(%{name: session_name})
+    {:ok, invite} = Sessions.create_invite(session)
 
-    redirect(conn, to: Routes.session_chat_path(conn, :index, session.id))
+    redirect(conn, to: Routes.join_session_path(conn, :show, invite.slug))
   end
 end

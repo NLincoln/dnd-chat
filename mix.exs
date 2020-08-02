@@ -20,8 +20,16 @@ defmodule DndChat.MixProject do
   def application do
     [
       mod: {DndChat.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: extra_applications(Mix.env())
     ]
+  end
+
+  defp extra_applications(:test) do
+    [:logger, :runtime_tools]
+  end
+
+  defp extra_applications(_) do
+    [:logger, :runtime_tools, :os_mon]
   end
 
   # Specifies which paths to compile per environment.

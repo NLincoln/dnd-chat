@@ -28,7 +28,8 @@ import "@testing-library/cypress/add-commands";
 
 export function createNewSession() {
   cy.visit("/");
-  cy.visit("/");
   cy.findByLabelText("Session Name").type("My Adventure!");
   cy.findByText("Create Session").click();
+  cy.findByLabelText("Player Name").type("Zaggy Boy");
+  cy.findByText("Join!").click();
 }
