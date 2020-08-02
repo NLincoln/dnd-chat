@@ -23,6 +23,25 @@ let csrfToken = document
   .getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
+  hooks: {
+    MessageInputForm: {
+      mounted() {
+        this.el.addEventListener("submit", (event) => {
+          /**
+           * @type {HTMLInputElement}
+           */
+          let input = event.target.querySelector("#message-input");
+          /**
+           * Gotta wait until after form submission
+           * to actually clear the values.
+           */
+          setTimeout(() => {
+            input.value = "";
+          }, 0);
+        });
+      },
+    },
+  },
 });
 
 // Show progress bar on live navigation and form submits

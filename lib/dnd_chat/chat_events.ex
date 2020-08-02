@@ -7,7 +7,7 @@ defmodule DndChat.ChatEvents do
     query =
       from e in Event,
         where: e.session_id == ^session_id,
-        order_by: [desc: e.timestamp],
+        order_by: [asc: e.timestamp],
         limit: 25
 
     Repo.all(query) |> Enum.map(fn event -> process_event(event) end)
