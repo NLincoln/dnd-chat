@@ -25,3 +25,10 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import "@testing-library/cypress/add-commands";
+
+export function createNewSession() {
+  cy.visit("/");
+  cy.visit("/");
+  cy.findByLabelText("Session Name").type("My Adventure!");
+  cy.findByText("Create Session").click();
+}
