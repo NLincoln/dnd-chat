@@ -47,8 +47,6 @@ jobs:
           npm i -g @bahmutov/print-env
           print-env GITHUB
 
-      - run: cd assets
-
       - name: verify Cypress
         env:
           # make sure every Cypress install prints minimal information
@@ -56,6 +54,7 @@ jobs:
         run: |
           npx cypress verify
           npx cypress info
+        working-directory: ./assets
 
       # Restore the previous NPM modules and Cypress binary archives.
       # Any updated archives will be saved automatically after the entire
@@ -80,6 +79,7 @@ jobs:
       # Starts local server, then runs Cypress tests and records results on the dashboard
       - name: Cypress tests
         run: npx cypress run
+        working-directory: ./assets
         env:
           # place your secret record key at
           # https://github.com/cypress-io/cypress-example-kitchensink/settings/secrets
