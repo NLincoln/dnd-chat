@@ -12,12 +12,18 @@ defmodule DndChatWeb.SessionChatLive do
   end
 
   def handle_event("send_message", %{"message" => message}, socket) do
-    ChatEvents.send_message(socket.assigns.playsession.id, %DndChat.ChatEvents.Message{
-      player_id: "todo",
-      text: Map.get(message, "text")
-    })
+    case String.trim(Map.get(message, "text")) do
+      "" ->
+        {:noreply, socket}
 
-    {:noreply, socket}
+      text ->
+        ChatEvents.send_message(socket.assigns.playsession.id, %DndChat.ChatEvents.Message{
+          player_id: "todo",
+          text: text
+        })
+
+        {:noreply, assign(socket, :current_message, ChatEvents.new_message("todo"))}
+    end
   end
 
   def handle_info({:new_message, _}, socket) do

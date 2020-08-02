@@ -1,16 +1,24 @@
-<div class="card">
+<div class="card mt-4">
   <div class="card-header">
     <%= @playsession.name %>
   </div>
   <div class="card-body">
-    <ul>
+    <div>
       <%= for event <- @events do %>
-        <li> <%= event.data.text %> </li>
+        <div>
+          <small class="text-muted">
+            Player Name Placeholder
+          </small>
+        </div>
+        <div style="line-height: 0.9" class="mb-2">
+          <small data-testid="event-timestamp">[<%= event.timestamp %>] </small> <%= event.data.text %>
+        </div>
       <% end %>
-    </ul>
-    <%= f = form_for @current_message, "#", [phx_submit: "send_message", id: "message_editor"]%>
-      <%= text_input f, :text, placeholder: "Say something", "data-testid": "message" %>
-      <%# <input placeholder="Say something" data-testid="message"> %>
+    </div>
+  </div>
+  <div>
+    <%= f = form_for @current_message, "#", [phx_submit: "send_message", phx_hook: "MessageInputForm", id: "message-input-form"]%>
+      <%= text_input f, :text, id: "message-input", placeholder: "Say something", "data-testid": "message", autocomplete: "off", class: "form-control" %>
     </form>
   </div>
 </div>
