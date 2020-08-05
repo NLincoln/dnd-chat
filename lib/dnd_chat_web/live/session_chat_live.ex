@@ -3,12 +3,19 @@ defmodule DndChatWeb.SessionChatLive do
 
   alias DndChat.{Sessions, ChatEvents}
 
-  def mount(params, _session, socket) do
-    session = Sessions.get_by_id(Map.get(params, "id"))
-    DndChat.PubSub.subscribe_messages(session.id)
-    message = ChatEvents.new_message("todo")
-    events = ChatEvents.recent(session.id)
-    {:ok, assign(socket, playsession: session, current_message: message, events: events)}
+  def mount(params, session, socket) do
+    {:ok, playsession, player} = Sessions.get_for_player_id(Map.get(session, "player_id"))
+    DndChat.PubSub.subscribe_messages(playsession.id)
+    message = ChatEvents.new_message(player)
+    events = ChatEvents.recent(playsession.id)
+
+    {:ok,
+     assign(socket,
+       playsession: playsession,
+       current_message: message,
+       events: events,
+       player: player
+     )}
   end
 
   def handle_event("send_message", %{"message" => message}, socket) do
@@ -18,11 +25,13 @@ defmodule DndChatWeb.SessionChatLive do
 
       text ->
         ChatEvents.send_message(socket.assigns.playsession.id, %DndChat.ChatEvents.Message{
-          player_id: "todo",
+          player_id: socket.assigns.player.id,
+          player_name: socket.assigns.player.name,
           text: text
         })
 
-        {:noreply, assign(socket, :current_message, ChatEvents.new_message("todo"))}
+        {:noreply,
+         assign(socket, :current_message, ChatEvents.new_message(socket.assigns.player))}
     end
   end
 

@@ -4,10 +4,21 @@
 const { createNewSession } = require("../support/commands");
 
 it("can send messages", function () {
-  createNewSession();
+  createNewSession({ playerName: "Friendneir" });
   cy.findByTestId("message").type("hello!{enter}");
   cy.findByText("hello!").should("be.visible");
   cy.findByTestId("event-timestamp").should("be.visible");
 
   cy.findByTestId("message").should("have.value", "");
+  cy.findByTestId("event-text").should("contain.text", "hello!");
+  cy.findByTestId("player-name").should("contain.text", "Friendneir");
+});
+
+it("can execute dice rolls", function () {
+  createNewSession({ playerName: "Tortimer" });
+  cy.findByTestId("message").type("#2d6+3{enter}");
+  cy.findByTestId("event-text").should(
+    "contain.text",
+    "Tortimer rolled #2d6+3"
+  );
 });
