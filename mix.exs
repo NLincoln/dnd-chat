@@ -25,11 +25,11 @@ defmodule DndChat.MixProject do
   end
 
   defp extra_applications(:test) do
-    [:logger, :runtime_tools]
+    [:logger, :runtime_tools, :porcelain]
   end
 
   defp extra_applications(_) do
-    [:logger, :runtime_tools, :os_mon]
+    [:logger, :runtime_tools, :porcelain, :os_mon]
   end
 
   # Specifies which paths to compile per environment.
@@ -53,7 +53,8 @@ defmodule DndChat.MixProject do
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:porcelain, "~> 2.0"}
     ]
   end
 

@@ -19,6 +19,8 @@ config :dnd_chat, DndChatWeb.Endpoint,
   pubsub_server: DndChat.PubSub,
   live_view: [signing_salt: "wMxOYiEn"]
 
+config :porcelain, driver: Porcelain.Driver.Basic
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
