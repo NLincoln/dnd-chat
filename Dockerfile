@@ -46,11 +46,15 @@ RUN apk add --no-cache openssl ncurses-libs nodejs
 
 WORKDIR /app
 
-RUN chown nobody:nobody /app
+# RUN chown nobody:nobody /app
 
-USER nobody:nobody
+# USER nobody:nobody
 
-COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/dnd_chat ./
+# COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/dnd_chat ./
+# COPY --from=build --chown=nobody:nobody /app/dice-roller /app/dice-roller
+
+COPY --from=build /app/_build/prod/rel/dnd_chat ./
+COPY --from=build /app/dice-roller /app/dice-roller
 
 ENV HOME=/app
 
