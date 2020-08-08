@@ -4,9 +4,9 @@ defmodule DndChat.DiceRoller do
     cwd = File.cwd!()
 
     result =
-      Porcelain.exec("node", ["#{cwd}/assets/dice-roller.js"],
+      Porcelain.exec("node", ["index.js"],
         in: [roll_string, "\n"],
-        dir: "#{cwd}/assets"
+        dir: "#{cwd}/dice-roller"
       )
 
     Jason.decode(String.trim(result.out))
