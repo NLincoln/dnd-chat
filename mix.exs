@@ -29,7 +29,7 @@ defmodule DndChat.MixProject do
   end
 
   defp extra_applications(_) do
-    [:logger, :runtime_tools, :porcelain, :os_mon]
+    [:logger, :runtime_tools, :porcelain, :os_mon, :ssl]
   end
 
   # Specifies which paths to compile per environment.

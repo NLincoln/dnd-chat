@@ -5,7 +5,7 @@
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 config :dnd_chat,
   ecto_repos: [DndChat.Repo],
