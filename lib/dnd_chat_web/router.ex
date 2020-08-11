@@ -29,7 +29,7 @@ defmodule DndChatWeb.Router do
     get "/join-session/:id", JoinSessionController, :show
     post "/join-session/:slug/join", JoinSessionController, :join_session
 
-    live "/session/:id", SessionChatLive, :index
+    get "/session/:id", SessionChatController, :index
   end
 
   # Other scopes may use custom stacks.

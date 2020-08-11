@@ -1,8 +1,12 @@
 defmodule DndChatWeb.UserSocket do
   use Phoenix.Socket
 
+  require Logger
+
   ## Channels
   # channel "room:*", DndChatWeb.RoomChannel
+
+  channel "session:*", DndChatWeb.SessionChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -16,8 +20,16 @@ defmodule DndChatWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(params, socket, _connect_info) do
+    case Phoenix.Token.verify(socket, "session token", params["token"], max_age: 86400) do
+      {:ok, [player_id, session_id]} ->
+        socket = assign(socket, :session_id, session_id)
+        socket = assign(socket, :player_id, player_id)
+        {:ok, socket}
+
+      {:error, _} ->
+        :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
