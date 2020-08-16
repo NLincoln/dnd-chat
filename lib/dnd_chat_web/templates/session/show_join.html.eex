@@ -1,4 +1,21 @@
-<div class="d-flex justify-content-center align-items-center">
+<script>
+  function copyInviteUrl() {
+    const url = document.getElementById("invite_link").value;
+    navigator.clipboard.writeText(url).then(() => {
+      const button = document.getElementById("invite_copy_button");
+      const buttonWidth = getComputedStyle(button);
+      button.style.width = buttonWidth;
+      button.classList.replace("btn-outline-primary", "btn-outline-success");
+      button.innerHTML = `<i class="far fa-check-circle"></i>`;
+    });
+  }
+</script>
+
+<!-- force check-circle to be loaded in -->
+<i class="far fa-check-circle" style="display: none;"></i>
+
+
+<div class="d-flex justify-content-center align-items-center flex-column">
   <div class="shadow p-3 rounded mt-4">
     <h1>
       Join <%= @session.name %>
@@ -12,5 +29,22 @@
         Join!
       </button>
     <%end %>
+  </div>
+
+  <div class="shadow p-3 rounded mt-4">
+    <div class="form-group">
+      <label for="invite_link" class="">Invite Link</label>
+      <div class="input-group">
+        <%= tag :input, type: "text", name: "invite_link", id: "invite_link", class: "form-control", disabled: true, value: @invite_url, "data-testid": "invite-link" %>
+        <div class="input-group-append">
+          <button type="button" class="btn btn-outline-primary" id="invite_copy_button" onclick="copyInviteUrl()" data-testid="copy-link">
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+    <p>
+      Share this link to add players to <%= @session.name %>
+    </p>
   </div>
 </div>

@@ -18,6 +18,11 @@ config :dnd_chat, DndChat.Repo,
 # with webpack to recompile .js and .css sources.
 config :dnd_chat, DndChatWeb.Endpoint,
   http: [port: 4000],
+  url: [
+    host: "localhost",
+    port: 4000,
+    scheme: "http"
+  ],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,

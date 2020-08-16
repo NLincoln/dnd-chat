@@ -4,7 +4,7 @@ defmodule DndChat.Sessions do
 
   import Ecto.Query, only: [from: 2]
 
-  @invite_slug_length 256
+  @invite_slug_length 64
 
   @spec new_session(%{:name => binary()}) :: {:ok, Session.t()}
   def new_session(%{name: _} = params) do
@@ -27,6 +27,11 @@ defmodule DndChat.Sessions do
     {:ok, invite} = Repo.insert(invite)
 
     {:ok, invite}
+  end
+
+  def invites(session_id) do
+    from i in SessionInvite,
+      where: i.session_id == ^session_id
   end
 
   def players(session_id) do

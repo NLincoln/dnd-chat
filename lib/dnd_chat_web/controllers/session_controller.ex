@@ -16,7 +16,7 @@ defmodule DndChatWeb.SessionController do
 
   def show_join(conn, %{"id" => slug}) do
     {:ok, session} = Sessions.get_by_invite(slug)
-    render(conn, "show_join.html", session: session, slug: slug)
+    render(conn, "show_join.html", session: session, slug: slug, invite_url: current_url(conn))
   end
 
   def join_session(conn, %{"player_name" => player_name, "slug" => slug}) do

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Socket, Channel } from "phoenix";
 import { useGetSessionByIdQuery } from "./types";
+import { Dropdown } from "react-bootstrap";
 
 type EventData =
   | {
@@ -34,6 +35,57 @@ function getMeta(name: string): string {
 }
 
 const sessionId = getMeta("session-id");
+const playerId = getMeta("player-id");
+const token = getMeta("token");
+let socket = new Socket(`/socket`, {
+  params: {
+    player_id: playerId,
+    token,
+  },
+});
+socket.connect();
+let channel = socket.channel(`session:${sessionId}`);
+
+channel.join();
+
+function InviteButton(props: { inviteSlug: string }) {
+  const inviteUrl = `${window.location.origin}/join-session/${props.inviteSlug}`;
+  const [didCopy, setDidCopy] = useState(false);
+  return (
+    <Dropdown onToggle={() => setDidCopy(false)}>
+      <Dropdown.Toggle size={"sm"} variant={"outline-primary"}>
+        Invite Players
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.ItemText>
+          <div className="form-group" style={{ minWidth: 200 }}>
+            <label htmlFor="invite_link">Invite Link</label>
+            <input
+              type="text"
+              className={"form-control"}
+              disabled
+              value={inviteUrl}
+            />
+          </div>
+          <button
+            type="button"
+            className={
+              didCopy ? "btn btn-outline-success" : "btn btn-outline-primary"
+            }
+            data-testid="copy-link"
+            onClick={() => {
+              navigator.clipboard.writeText(inviteUrl).then(() => {
+                setDidCopy(true);
+              });
+            }}
+          >
+            {didCopy ? <i className={"far fa-check-circle"} /> : "Copy"}
+          </button>
+        </Dropdown.ItemText>
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+}
 
 export function SessionChat() {
   let [events, setEvents] = useState<Event[]>([]);
@@ -45,29 +97,14 @@ export function SessionChat() {
     },
   });
 
-  let channelRef = useRef<Channel>();
-
   useEffect(() => {
-    const sessionId = getMeta("session-id");
-    const playerId = getMeta("player-id");
-    const token = getMeta("token");
-    let socket = new Socket(`/socket`, {
-      params: {
-        player_id: playerId,
-        token,
-      },
-    });
-    socket.connect();
-    let channel = (channelRef.current = socket.channel(`session:${sessionId}`));
-
-    channel.join();
-    channel.on("recent_messages", (response) => {
+    const listener = channel.on("recent_messages", (response) => {
       setEvents(response.messages);
     });
     channel.push(`get_recent_messages`, {});
 
     return () => {
-      socket.disconnect();
+      channel.off("recent_messages", listener);
     };
   }, []);
 
@@ -75,15 +112,18 @@ export function SessionChat() {
     <div className="row mt-4">
       <div className="col-lg">
         <div className="card" data-testid="session-chat">
-          <div className="card-header">
-            Chat: {sessionQuery.data?.session.name}
+          <div className="card-header d-flex justify-content-between">
+            <span>{sessionQuery.data?.session.name}</span>
+            <InviteButton
+              inviteSlug={sessionQuery.data?.session.inviteSlug ?? ""}
+            />
           </div>
           <div>
             <form
               onSubmit={(event) => {
                 event.preventDefault();
                 setText("");
-                channelRef.current?.push("message", {
+                channel.push("message", {
                   text,
                 });
               }}

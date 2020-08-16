@@ -33,6 +33,7 @@ export type RootQueryTypeSessionArgs = {
 export type Session = {
   __typename?: 'Session';
   id: Scalars['ID'];
+  inviteSlug: Scalars['String'];
   name: Scalars['String'];
   players?: Maybe<Array<Player>>;
 };
@@ -46,7 +47,7 @@ export type GetSessionByIdQuery = (
   { __typename?: 'RootQueryType' }
   & { session: (
     { __typename?: 'Session' }
-    & Pick<Session, 'id' | 'name'>
+    & Pick<Session, 'id' | 'name' | 'inviteSlug'>
   ) }
 );
 
@@ -56,6 +57,7 @@ export const GetSessionByIdDocument = gql`
   session(id: $id) {
     id
     name
+    inviteSlug
   }
 }
     `;

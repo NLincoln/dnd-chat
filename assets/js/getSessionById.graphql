@@ -2,5 +2,6 @@ query getSessionById($id: ID!) {
   session(id: $id) {
     id
     name
+    inviteSlug
   }
 }

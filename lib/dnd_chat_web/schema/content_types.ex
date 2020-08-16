@@ -3,6 +3,7 @@ defmodule DndChatWeb.Schema.ContentTypes do
   use Absinthe.Relay.Schema.Notation, :modern
 
   alias DndChat.Sessions
+  import Ecto.Query, only: [from: 2]
 
   object :session do
     field :id, non_null(:id)
@@ -15,6 +16,18 @@ defmodule DndChatWeb.Schema.ContentTypes do
           |> DndChat.Repo.all()
 
         {:ok, players}
+      end)
+    end
+
+    field :invite_slug, non_null(:string) do
+      resolve(fn session, _args, _resolution ->
+        invite =
+          from(Sessions.invites(session.id),
+            limit: 1
+          )
+          |> DndChat.Repo.one()
+
+        {:ok, invite.slug}
       end)
     end
   end
