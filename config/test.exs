@@ -21,3 +21,4 @@ config :dnd_chat, DndChatWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+config :dnd_chat, :basic_auth, username: "user", password: "not_secret"
