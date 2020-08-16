@@ -3,7 +3,7 @@
     <h1>
       Join <%= @session.name %>
     </h1>
-    <%= form_for @conn, Routes.join_session_path(@conn, :join_session, @slug), fn _f -> %>
+    <%= form_for @conn, Routes.session_path(@conn, :join_session, @slug), fn _f -> %>
       <div class="form-group">
         <label for="player_name" class="">Player Name</label>
         <input type="text" name="player_name" id="player_name" class="form-control" required placeholder="Adventure awaits!" autocomplete="off" autofocus>

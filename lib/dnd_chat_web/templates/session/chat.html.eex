@@ -1,6 +1,6 @@
 <meta name="player-id" content="<%= @player_id %>">
 <meta name="session-id" content="<%= @session_id %>">
 
-<%= tag :meta, name: "token", content: Phoenix.Token.sign(@conn, "session token", @token) %>
+<%= tag :meta, name: "token", content: @token %>
 
 <div id="session-chat"></div>

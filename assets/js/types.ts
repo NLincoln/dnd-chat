@@ -11,6 +11,14 @@ export type Scalars = {
   Float: number;
 };
 
+export type Player = {
+  __typename?: 'Player';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  session: Session;
+  sessionId: Scalars['ID'];
+};
+
 export type RootQueryType = {
   __typename?: 'RootQueryType';
   /** Get session by ID */
@@ -26,6 +34,7 @@ export type Session = {
   __typename?: 'Session';
   id: Scalars['ID'];
   name: Scalars['String'];
+  players?: Maybe<Array<Player>>;
 };
 
 export type GetSessionByIdQueryVariables = Exact<{

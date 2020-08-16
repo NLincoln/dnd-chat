@@ -17,5 +17,7 @@ docker run -d \
   -e SECRET_KEY_BASE=$SECRET_KEY_BASE \
   -e SSL_CERT_FILE=/cert/live/dnd-chat.natelincoln.com/fullchain.pem \
   -e SSL_KEY_FILE=/cert/live/dnd-chat.natelincoln.com/privkey.pem \
+  -e ADMIN_USER=$ADMIN_USER \
+  -e ADMIN_PASSWORD=$ADMIN_PASSWORD \
   nlincoln/dnd-chat:master;
 EOSSH;

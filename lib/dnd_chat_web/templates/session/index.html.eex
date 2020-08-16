@@ -3,7 +3,7 @@
     <h1>
       DND Chat App
     </h1>
-    <%= form_for @conn, Routes.new_session_path(@conn, :new_session), fn _f -> %>
+    <%= form_for @conn, Routes.session_path(@conn, :new_session), fn _f -> %>
       <div class="form-group">
         <label for="session_name" class="">Session Name</label>
         <input type="text" name="session_name" id="session_name" class="form-control" required placeholder="Adventure awaits!" autocomplete="off" autofocus>

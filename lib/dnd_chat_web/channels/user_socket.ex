@@ -21,13 +21,13 @@ defmodule DndChatWeb.UserSocket do
   # performing token verification on connect.
   @impl true
   def connect(params, socket, _connect_info) do
-    case Phoenix.Token.verify(socket, "session token", params["token"], max_age: 86400) do
-      {:ok, [player_id, session_id]} ->
+    case DndChatWeb.ApiToken.verify(socket, params["token"]) do
+      {:ok, {player_id, session_id}} ->
         socket = assign(socket, :session_id, session_id)
         socket = assign(socket, :player_id, player_id)
         {:ok, socket}
 
-      {:error, _} ->
+      :error ->
         :error
     end
   end
