@@ -37,6 +37,10 @@ config :dnd_chat, DndChatWeb.Endpoint,
   secret_key_base: secret_key_base,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :dnd_chat, :basic_auth,
+  username: System.get_env("ADMIN_USER"),
+  password: System.get_env("ADMIN_PASSWORD")
+
 # ## Using releases (Elixir v1.9+)
 #
 # If you are doing OTP releases, you need to instruct Phoenix

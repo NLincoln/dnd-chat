@@ -19,6 +19,12 @@ defmodule DndChatWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :admin do
+    import Plug.BasicAuth
+
+    plug :basic_auth, Application.get_env(:dnd_chat, :basic_auth)
+  end
+
   scope "/", DndChatWeb do
     pipe_through :browser
 
@@ -53,6 +59,16 @@ defmodule DndChatWeb.Router do
 
     scope "/" do
       pipe_through :browser
+      live_dashboard "/dashboard", metrics: DndChatWeb.Telemetry
+    end
+  end
+
+  if Mix.env() in [:prod] do
+    import Phoenix.LiveDashboard.Router
+
+    scope "/" do
+      pipe_through :browser
+      pipe_through :admin
       live_dashboard "/dashboard", metrics: DndChatWeb.Telemetry
     end
   end
