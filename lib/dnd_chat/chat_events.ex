@@ -4,42 +4,14 @@ defmodule DndChat.ChatEvents do
   alias DndChat.Sessions
   import Ecto.Query
 
-  def recent(session_id) do
-    query =
-      from e in Event,
-        where: e.session_id == ^session_id,
-        order_by: [desc: e.timestamp],
-        limit: 25
-
-    Repo.all(query) |> Enum.map(fn event -> process_event(event) end)
+  def events_in_session(session_id) do
+    from e in Event,
+      where: e.session_id == ^session_id,
+      order_by: [desc: e.timestamp]
   end
 
-  defp process_event(event = %Event{}) do
-    %{
-      id: event.id,
-      session_id: event.session_id,
-      timestamp: event.timestamp,
-      data: process_event_data(event.data)
-    }
-  end
-
-  defp process_event_data(event = %{"type" => "Message"}) do
-    %{
-      type: "Message",
-      player_id: Map.get(event, "player_id"),
-      player_name: Map.get(event, "player_name"),
-      text: Map.get(event, "text")
-    }
-  end
-
-  defp process_event_data(event = %{"type" => "DiceRoll"}) do
-    %{
-      type: "DiceRoll",
-      player_id: Map.get(event, "player_id"),
-      player_name: Map.get(event, "player_name"),
-      roll: Map.get(event, "roll"),
-      result: event["result"]["total"]
-    }
+  def recent_events(query, num_recent \\ 25) do
+    from query, limit: ^num_recent
   end
 
   def process_message(_session = %Sessions.Session{}, message = %Message{}) do

@@ -9,7 +9,9 @@ type EventData =
     }
   | {
       type: "DiceRoll";
-      result: string;
+      result: {
+        total: number;
+      };
       roll: string;
       player_name: string;
     };
@@ -85,7 +87,7 @@ export function SessionChat() {
             <div>
               {events.map((event) => {
                 return (
-                  <>
+                  <React.Fragment key={event.timestamp}>
                     <div data-testid="player-name">
                       <small className="text-muted">
                         {event.data.player_name}
@@ -101,11 +103,11 @@ export function SessionChat() {
                         <span data-testid="event-text">
                           {event.data.player_name} rolled {event.data.roll} =
                           {"> "}
-                          {event.data.result}
+                          {event.data.result.total}
                         </span>
                       ) : null}
                     </div>
-                  </>
+                  </React.Fragment>
                 );
               })}
             </div>
