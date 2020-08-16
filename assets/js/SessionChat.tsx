@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Socket, Channel } from "phoenix";
+import { useGetSessionByIdQuery } from "./types";
 
 type EventData =
   | {
@@ -13,6 +14,10 @@ type EventData =
         total: number;
       };
       roll: string;
+      player_name: string;
+    }
+  | {
+      type: "PlayerJoined";
       player_name: string;
     };
 
@@ -28,9 +33,17 @@ function getMeta(name: string): string {
   return element.content;
 }
 
+const sessionId = getMeta("session-id");
+
 export function SessionChat() {
   let [events, setEvents] = useState<Event[]>([]);
   let [text, setText] = useState<string>("");
+
+  const sessionQuery = useGetSessionByIdQuery({
+    variables: {
+      id: sessionId,
+    },
+  });
 
   let channelRef = useRef<Channel>();
 
@@ -62,7 +75,9 @@ export function SessionChat() {
     <div className="row mt-4">
       <div className="col-lg">
         <div className="card" data-testid="session-chat">
-          <div className="card-header">Chat: {"playsession.name"}</div>
+          <div className="card-header">
+            Chat: {sessionQuery.data?.session.name}
+          </div>
           <div>
             <form
               onSubmit={(event) => {
@@ -87,7 +102,10 @@ export function SessionChat() {
             <div>
               {events.map((event) => {
                 return (
-                  <React.Fragment key={event.timestamp}>
+                  <div
+                    key={event.timestamp}
+                    data-testid={`event-type-${event.data.type}`}
+                  >
                     <div data-testid="player-name">
                       <small className="text-muted">
                         {event.data.player_name}
@@ -105,9 +123,13 @@ export function SessionChat() {
                           {"> "}
                           {event.data.result.total}
                         </span>
+                      ) : event.data.type === "PlayerJoined" ? (
+                        <span data-testid="event-text">
+                          {event.data.player_name} joined
+                        </span>
                       ) : null}
                     </div>
-                  </React.Fragment>
+                  </div>
                 );
               })}
             </div>

@@ -10,4 +10,9 @@ it("can create a new session", function () {
   cy.findByLabelText("Player Name").type("Zaggy Boy");
   cy.findByText("Join!").click();
   cy.findByTestId("session-chat");
+
+  cy.findByTestId(`event-type-PlayerJoined`).should(
+    "contain.text",
+    "Zaggy Boy joined"
+  );
 });

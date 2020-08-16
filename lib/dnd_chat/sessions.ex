@@ -29,6 +29,12 @@ defmodule DndChat.Sessions do
     {:ok, invite}
   end
 
+  def players(session_id) do
+    from p in Player,
+      where: p.session_id == ^session_id,
+      order_by: p.name
+  end
+
   @spec get_by_id(binary()) :: Session.t()
   def get_by_id(id) do
     Repo.get!(Session, id)
@@ -59,6 +65,13 @@ defmodule DndChat.Sessions do
         name: player_name
       }
       |> Repo.insert()
+
+    :ok =
+      DndChat.ChatEvents.build_event(session.id, %DndChat.ChatEvents.PlayerJoinedEvent{
+        player_id: player.id,
+        player_name: player_name
+      })
+      |> DndChat.ChatEvents.persist_event()
 
     {:ok, session, player}
   end

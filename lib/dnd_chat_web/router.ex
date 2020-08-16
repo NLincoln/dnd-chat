@@ -33,9 +33,13 @@ defmodule DndChatWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", DndChatWeb do
-  #   pipe_through :api
-  # end
+  scope "/api" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: DndChatWeb.Schema
+
+    forward "/graphql", Absinthe.Plug, schema: DndChatWeb.Schema
+  end
 
   # Enables LiveDashboard only for development
   #
